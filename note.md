@@ -1,22 +1,26 @@
-# สรุปโค้ด Find Your Hat 
+🎮 Project: Find Your Hat  🐱 & 💗
 
-## 🎮 คอนเซปต์
-พาแมว `🐱` เดินไปหาหัวใจ `💗` โดยต้องหลบยักษ์ `👹` และห้ามตกขอบแผนที่
+## 🏗️ Architecture & Design Patterns
+* **Encapsulation**: ใช้ **Private Class Fields (`#`)** เพื่อทำ Data Hiding ป้องกันไม่ให้สถานะภายในเกม (เช่น พิกัดแมว) ถูกแก้ไขจากภายนอกโดยตรง 🛡️
+* **Static Factory Method**: `generateField()` ทำหน้าที่เป็นโรงงานสร้าง Object (Factory Pattern) ช่วยแยก Logic การสร้างด่าน (Creation) ออกจาก Logic การเล่น (Behavior) 🏭
+* **Asynchronous Flow**: ใช้ `readline/promises` ร่วมกับ **Async/Await** เพื่อจัดการ User Input แบบ non-blocking ทำให้ Program ไม่ค้างขณะรอรับคำสั่ง ⏳
 
-## 🏗️ โครงสร้าง
-- **Constants**: รวมสัญลักษณ์ `🐱`, `💗`, `👹` ไว้ที่เดียว จะเปลี่ยนธีมเมื่อไหร่ก็ง่าย
-- **Class Field**: ใช้เก็บแผนที่และพิกัดแมว ตัวแปรขึ้นต้นด้วย `#` เพื่อป้องกันข้อมูลโดนแก้จากข้างนอก
-- **Static Method**: ตัวสร้างด่านสุ่ม คอยคำนวณเปอร์เซ็นต์ยักษ์และวางจุดเริ่มต้น
+## 🕹️ Core Game Logic
+1.  **State Management**: ใช้ **2D Array** แทนระบบพิกัด Cartesian โดยอ้างอิงแบบ `[row][col]` หรือ `[y][x]` 📍
+2.  **Collision Detection**: ทุกครั้งที่มีการ Move โปรแกรมจะตรวจสอบเงื่อนไข (Boundary & Content Check):
+    * **Out of Bounds**: เช็กว่าดัชนี Array ติดลบหรือเกินขนาดที่กำหนดหรือไม่ 🚫
+    * **Element Check**: ตรวจสอบค่าในช่องเป้าหมายว่าคือ `👹` (Hole) หรือ `💗` (Hat) 🎯
+3.  **Game Loop**: รันลูปด้วยเงื่อนไข `#isPlaying` และใช้ `console.clear()` เพื่อทำ **Re-rendering** ให้ UI บน Terminal ดูลื่นไหล 🔄
 
-## 🕹️ ระบบการทำงาน
-1. **Input**: รับค่า `w, a, s, d` ผ่าน `readline` แบบ Async (รอคนพิมพ์)
-2. **Move & Check**: ทุกก้าวที่เดิน จะเช็ก 3 อย่าง:
-   - **ขอบ**: หลุดเฟรมไหม?
-   - **ยักษ์**: โดนยักษ์กินไหม?
-   - **หัวใจ**: เจอความรักหรือยัง?
-3. **Loop**: ถ้ายังไม่ชนะหรือแพ้ ก็ล้างจอ (`clear`) แล้ววาดแผนที่ใหม่วนไป
+🛠️ Data Structure & Assets
+| Object | Representation | Technical Role |
+| :--- | :---: | :--- |
+| **Player** | `🐱` | Current Coordinate Pointer |
+| **Target** | `💗` | Win Condition Trigger |
+| **Obstacle** | `👹` | Game Over Condition (Trap) |
+| **Field** | `⬜` | Empty Node in Grid |
 
-## 🛠️ เทคนิคที่ใช้
-- **Array 2D**: ใช้พิกัด `[y][x]` จัดการตำแหน่ง
-- **Resource Management**: ใช้ `finally` ปิดตัวรับคำสั่งเสมอ ป้องกันโปรแกรมค้าง
-- **Re-render**: ใช้ `console.clear()` ให้ฟีลเหมือนเล่นเกมจริงๆ ไม่ใช่แค่ Log ข้อความต่อกัน
+🚀 Execution Strategy
+* **Error Handling**: ครอบด้วย `try...finally` เพื่อการทำ **Clean-up Phase** คือการปิด `Interface` ของ Readline เสมอ ไม่ว่าเกมจะจบด้วยการ Error หรือการเล่นปกติ เพื่อป้องกัน Memory Leak 🧹
+* **Randomization**: ใช้ `Math.random()` ร่วมกับ `do...while` ในการสุ่มวางไอเทม เพื่อการันตีว่า `💗` และ `🐱` จะไม่เกิดซ้อนทับกันตั้งแต่เริ่มเกม 🎲
+
