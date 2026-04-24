@@ -4,10 +4,10 @@ const { stdin: input, stdout: output } = require("node:process");
 const CELL_WIDTH = 5;
 
 const ELEMENTS = {
-  hat: "^",
-  hole: "XX",
+  hat: "💗",
+  hole: "👹",
   field: "⬜",
-  player: "@@",
+  player: "🐱",
   title: "FIND YOUR Hat!",
 };
 
