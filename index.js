@@ -5,9 +5,9 @@ const CELL_WIDTH = 5;
 
 const ELEMENTS = {
   hat: "^",
-  hole: "X",
+  hole: "XX",
   field: "⬜",
-  player: "@",
+  player: "@@",
   title: "FIND YOUR Hat!",
 };
 
